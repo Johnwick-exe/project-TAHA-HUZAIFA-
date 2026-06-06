@@ -1,0 +1,1445 @@
+<!DOCTYPE html>
+<!-- ============================================================
+     DOCTYPE html — Tells the browser: "This is a modern HTML5 page."
+     Without this, older browsers may render the page incorrectly.
+     ============================================================ -->
+
+<html lang="en">
+<!-- <html> — The root/start of every HTML page. Everything lives inside it.
+     lang="en" — Tells search engines and screen readers the page is in English. -->
+
+<head>
+<!-- <head> — Hidden section. Contains settings, fonts, and styles the browser
+     needs BEFORE showing the page. Users don't see this section directly. -->
+
+  <meta charset="UTF-8">
+  <!-- charset="UTF-8" — Allows special characters (é, ü, ₹, etc.) to display correctly. -->
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- viewport — Makes the page look good on mobile phones.
+       width=device-width → page width = screen width
+       initial-scale=1.0 → no zoom on load -->
+
+  <title>GlowLux Beauty</title>
+  <!-- <title> — Text shown on the browser tab. Also used by Google search results. -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <!-- Google Fonts — Loads two custom fonts from the internet:
+       "Playfair Display" → elegant serif font used for headings (luxury feel)
+       "Lato" → clean sans-serif used for body text (easy to read)
+       preconnect → browser connects to Google's font server early, making loading faster -->
+
+  <style>
+  /* ============================================================
+     STYLE SECTION — All the visual design lives here.
+     CSS (Cascading Style Sheets) controls colors, sizes,
+     spacing, animations — basically how everything looks.
+     ============================================================ */
+
+  /* --- CSS Variables (Custom Properties) ---
+     Think of these as "named paint buckets."
+     Instead of typing #D4AF7A everywhere, we write var(--gold).
+     If we want to change the gold color site-wide, we only edit ONE line here. */
+  :root {
+    --gold:       #C9965A;   /* Warm gold — main brand accent color */
+    --gold-light: #F5E6D3;   /* Very pale gold — for backgrounds and hover effects */
+    --dark:       #1A1A1A;   /* Near-black — for main text */
+    --cream:      #FDF8F3;   /* Warm off-white — page background */
+    --soft:       #7A6E65;   /* Medium warm gray — for secondary/smaller text */
+    --white:      #FFFFFF;
+    --card-bg:    #FFFCF9;   /* Slightly warm white — for product cards */
+    --radius:     14px;      /* How rounded corners are (bigger = more rounded) */
+    --shadow:     0 4px 24px rgba(0,0,0,0.08);  /* Subtle drop shadow for cards */
+  }
+
+  /* --- Universal Reset ---
+     By default, browsers add their own padding/margin to elements.
+     * { margin:0; padding:0 } removes all of that so WE control every pixel.
+     box-sizing: border-box → padding is included inside the element's width,
+     so a 200px wide box stays 200px even if we add 20px of padding. */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  /* --- Body (the whole visible page) ---
+     font-family → sets the default font for everything
+     background-color → warm cream background — feels premium, not harsh white
+     color → default text color
+     scroll-behavior: smooth → when nav links jump to sections, it glides instead of snapping */
+  body {
+    font-family: 'Lato', sans-serif;
+    background-color: var(--cream);
+    color: var(--dark);
+    scroll-behavior: smooth;
+    overflow-x: hidden;  /* Prevents horizontal scrollbar from appearing accidentally */
+  }
+
+  /* ===== NAVIGATION BAR ===== */
+  /* position: sticky → bar sticks to the top as user scrolls
+     top: 0 → sticks at the very top of the screen
+     z-index: 100 → stays on top of all other page content (higher = more on top)
+     backdrop-filter: blur → frosted-glass effect on the background
+     border-bottom → thin gold line below the nav */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;                  /* flex = side-by-side layout */
+    justify-content: space-between; /* logo on left, links on right */
+    align-items: center;            /* vertically centered */
+    padding: 18px 60px;
+    background: rgba(253, 248, 243, 0.92); /* 92% opaque cream — slight see-through */
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--gold-light);
+  }
+
+  /* Logo text styling */
+  .logo {
+    font-family: 'Playfair Display', serif; /* Elegant serif font for brand name */
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--dark);
+    letter-spacing: 1px; /* Slight spacing between letters — looks luxurious */
+  }
+
+  /* The small dot inside the logo */
+  .logo span {
+    color: var(--gold); /* Gold dot accent */
+  }
+
+  /* Nav links container */
+  .nav-links {
+    display: flex;
+    gap: 40px;        /* 40px space between each link */
+    list-style: none; /* Removes bullet points from the <ul> list */
+  }
+
+  /* Individual nav link styling */
+  .nav-links a {
+    text-decoration: none;     /* Removes underline from links */
+    color: var(--soft);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase; /* Makes text all-caps */
+    transition: color 0.3s;    /* Smooth color change on hover (takes 0.3 seconds) */
+  }
+
+  /* When user hovers over a nav link */
+  .nav-links a:hover {
+    color: var(--gold); /* Changes text to gold */
+  }
+
+  /* ===== HERO SECTION (Big top banner) ===== */
+  #home {
+    min-height: 100vh;          /* min-height: 100vh = fills at least the full screen height */
+    display: flex;
+    flex-direction: column;     /* Stack items vertically */
+    justify-content: center;    /* Center content vertically */
+    align-items: center;
+    text-align: center;
+    padding: 80px 40px;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(160deg, #FDF8F3 0%, #F5E6D3 50%, #EDD5B3 100%);
+    /* linear-gradient → smooth color transition from top-left to bottom-right
+       Creates a warm peachy-gold feel that's clearly "beauty brand" */
+  }
+
+  /* Decorative background circles (purely visual flair) */
+  #home::before,
+  #home::after {
+    content: '';             /* These are fake elements with no text — pure decoration */
+    position: absolute;      /* Positioned relative to the #home section */
+    border-radius: 50%;      /* Makes them perfect circles */
+    opacity: 0.15;           /* Very faint — just adds texture */
+  }
+
+  #home::before {
+    width: 600px;
+    height: 600px;
+    background: var(--gold);
+    top: -200px;
+    right: -150px; /* Partially off-screen top right */
+  }
+
+  #home::after {
+    width: 400px;
+    height: 400px;
+    background: var(--gold);
+    bottom: -100px;
+    left: -100px; /* Partially off-screen bottom left */
+  }
+
+  /* Small tag above the hero heading (e.g. "✦ NEW COLLECTION") */
+  .hero-tag {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 20px;
+    padding: 8px 20px;
+    border: 1px solid var(--gold);
+    border-radius: 50px; /* Pill shape */
+  }
+
+  /* Main hero headline */
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(42px, 7vw, 86px);
+    /* clamp(min, preferred, max) → responsive font size:
+       minimum 42px, ideally 7% of screen width, maximum 86px */
+    line-height: 1.1;
+    color: var(--dark);
+    max-width: 800px;
+    margin-bottom: 24px;
+  }
+
+  /* Italic gold styled word within title */
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  /* Subtitle paragraph below the main headline */
+  .hero-subtitle {
+    font-size: 18px;
+    color: var(--soft);
+    max-width: 480px;
+    line-height: 1.7;
+    margin-bottom: 44px;
+  }
+
+  /* Call-to-action buttons container */
+  .hero-buttons {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;    /* Wrap to next line if screen is too narrow */
+    justify-content: center;
+  }
+
+  /* Main filled button */
+  .btn-primary {
+    background: var(--gold);
+    color: white;
+    padding: 16px 40px;
+    border: none;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;        /* Shows hand cursor on hover */
+    text-decoration: none;
+    transition: all 0.3s;  /* Smooth transition for ALL properties on hover */
+  }
+
+  .btn-primary:hover {
+    background: #B5834A;   /* Slightly darker gold on hover */
+    transform: translateY(-2px); /* Moves up 2px — subtle "lift" effect */
+  }
+
+  /* Outline (border-only) button */
+  .btn-outline {
+    background: transparent;
+    color: var(--dark);
+    padding: 16px 40px;
+    border: 1.5px solid var(--dark);
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+
+  .btn-outline:hover {
+    background: var(--dark);
+    color: white;
+  }
+
+  /* Stats row below hero buttons (e.g. "5000+ customers") */
+  .hero-stats {
+    display: flex;
+    gap: 60px;
+    margin-top: 70px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--gold);
+  }
+
+  .stat-label {
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--soft);
+    margin-top: 4px;
+  }
+
+  /* ===== SECTION STYLES (shared across Products, About, etc.) ===== */
+  section {
+    padding: 100px 60px; /* Large top/bottom padding = sections feel spacious */
+  }
+
+  /* Section header (title + subtitle block) */
+  .section-header {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto 70px; /* Centers the header and adds space below it */
+  }
+
+  /* Small label above section titles */
+  .section-tag {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  /* Section main title */
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(30px, 4vw, 48px);
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+
+  /* Section description text */
+  .section-desc {
+    color: var(--soft);
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  /* ===== FEATURED STRIP (icons row between sections) ===== */
+  #features {
+    background: var(--dark);
+    padding: 50px 60px;
+  }
+
+  /* 4-column grid for feature icons */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
+    gap: 40px;
+  }
+
+  /* Individual feature item */
+  .feature-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    color: white;
+  }
+
+  /* Icon circle in features */
+  .feature-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0; /* Prevents icon from shrinking if text is long */
+  }
+
+  .feature-title {
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+  }
+
+  .feature-desc {
+    font-size: 13px;
+    color: rgba(255,255,255,0.6); /* White at 60% opacity = muted */
+    margin-top: 3px;
+  }
+
+  /* ===== PRODUCTS SECTION ===== */
+  #products {
+    background: var(--cream);
+  }
+
+  /* Responsive product card grid */
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    /* auto-fill → creates as many columns as fit
+       minmax(260px, 1fr) → each column is at least 260px wide, max equal share */
+    gap: 30px;
+  }
+
+  /* Individual product card */
+  .product-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    overflow: hidden;       /* Clips image to the card's rounded corners */
+    border: 1px solid rgba(201, 150, 90, 0.15);
+    transition: all 0.4s;  /* Smooth transition for hover effects */
+    cursor: pointer;
+    position: relative;
+  }
+
+  /* Card lifts up and shadow grows on hover */
+  .product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.12);
+  }
+
+  /* Product image container */
+  .card-image {
+    width: 100%;
+    height: 260px;
+    overflow: hidden;
+    position: relative;
+    background: var(--gold-light);
+  }
+
+  /* The actual <img> inside the card */
+  .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;       /* Fills the box without stretching/distorting */
+    transition: transform 0.5s;
+  }
+
+  /* Image zooms in slightly when card is hovered */
+  .product-card:hover .card-image img {
+    transform: scale(1.05); /* Zooms to 105% of original size */
+  }
+
+  /* "SALE" or "NEW" badge on product cards */
+  .card-badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    background: var(--gold);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 50px;
+    z-index: 2; /* Sits on top of the image */
+  }
+
+  /* Wishlist heart button */
+  .card-wishlist {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    transition: background 0.2s;
+  }
+
+  .card-wishlist:hover {
+    background: #ffe0f0; /* Light pink on hover */
+  }
+
+  /* Card text area below the image */
+  .card-body {
+    padding: 20px;
+  }
+
+  /* Category label (e.g. "Skincare") */
+  .card-category {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  .card-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    margin: 6px 0 8px;
+    line-height: 1.3;
+  }
+
+  /* Star rating row */
+  .card-stars {
+    color: var(--gold);
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+
+  .card-stars span {
+    color: var(--soft);
+    font-size: 12px;
+    margin-left: 6px;
+  }
+
+  /* Price row with old price (strikethrough) and new price */
+  .card-price {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+
+  .price-new {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--dark);
+  }
+
+  .price-old {
+    font-size: 14px;
+    color: var(--soft);
+    text-decoration: line-through; /* Draws a line through old price */
+  }
+
+  /* "Add to Cart" button on product cards */
+  .card-btn {
+    width: 100%;
+    margin-top: 16px;
+    padding: 12px;
+    background: transparent;
+    border: 1.5px solid var(--gold);
+    border-radius: 8px;
+    color: var(--gold);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .card-btn:hover {
+    background: var(--gold);
+    color: white;
+  }
+
+  /* ===== DEALS BANNER ===== */
+  #deals {
+    background: var(--dark);
+    color: white;
+    text-align: center;
+    padding: 80px 60px;
+  }
+
+  .deals-countdown {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 40px 0;
+    flex-wrap: wrap;
+  }
+
+  /* Individual countdown box (Hours, Minutes, Seconds) */
+  .countdown-box {
+    background: rgba(255,255,255,0.08); /* Slightly white box on dark bg */
+    border: 1px solid rgba(201, 150, 90, 0.3);
+    border-radius: 12px;
+    padding: 24px 28px;
+    min-width: 90px;
+  }
+
+  .countdown-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    font-weight: 700;
+    color: var(--gold);
+    display: block;
+    line-height: 1;
+  }
+
+  .countdown-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-top: 6px;
+    display: block;
+  }
+
+  /* ===== TESTIMONIALS ===== */
+  #reviews {
+    background: var(--gold-light);
+  }
+
+  /* Horizontal scrollable testimonials row */
+  .testimonials-row {
+    display: flex;
+    gap: 24px;
+    overflow-x: auto; /* Horizontal scroll if too many cards */
+    padding-bottom: 20px;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  }
+
+  /* Hides the scrollbar visually but keeps scrolling functional */
+  .testimonials-row::-webkit-scrollbar { display: none; }
+
+  /* Individual review card */
+  .review-card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 30px;
+    min-width: 300px;
+    border: 1px solid rgba(201, 150, 90, 0.2);
+  }
+
+  .review-stars { font-size: 14px; color: var(--gold); margin-bottom: 14px; }
+
+  .review-text {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--dark);
+    font-style: italic;
+    margin-bottom: 20px;
+  }
+
+  /* Reviewer info row (avatar + name) */
+  .reviewer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  /* Circular avatar */
+  .reviewer-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .reviewer-name {
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  .reviewer-location {
+    font-size: 12px;
+    color: var(--soft);
+  }
+
+  /* ===== CONTACT SECTION ===== */
+  #contact {
+    background: var(--cream);
+  }
+
+  /* 2-column layout: contact info left, form right */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .contact-info h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    margin-bottom: 16px;
+  }
+
+  .contact-info p {
+    color: var(--soft);
+    line-height: 1.7;
+    margin-bottom: 32px;
+  }
+
+  .contact-detail {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    align-items: flex-start;
+  }
+
+  .contact-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--gold-light);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .contact-detail-text strong {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+
+  .contact-detail-text span {
+    font-size: 13px;
+    color: var(--soft);
+  }
+
+  /* Contact form */
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* Input and textarea base styles */
+  .contact-form input,
+  .contact-form textarea {
+    width: 100%;
+    padding: 14px 18px;
+    border: 1.5px solid rgba(201, 150, 90, 0.3);
+    border-radius: 10px;
+    background: white;
+    font-family: 'Lato', sans-serif;
+    font-size: 14px;
+    color: var(--dark);
+    transition: border-color 0.3s;
+    outline: none; /* Removes default browser blue outline on focus */
+  }
+
+  /* Highlights border when user clicks into field */
+  .contact-form input:focus,
+  .contact-form textarea:focus {
+    border-color: var(--gold);
+  }
+
+  .contact-form textarea {
+    height: 140px;
+    resize: vertical; /* User can resize only vertically */
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    background: var(--dark);
+    color: white;
+    text-align: center;
+    padding: 40px;
+  }
+
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+
+  footer p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.4);
+  }
+
+  /* ===== DEAL POPUP OVERLAY ===== */
+  /* The dark semi-transparent overlay behind the popup */
+  .popup-overlay {
+    display: none;             /* Hidden by default */
+    position: fixed;           /* Covers the whole screen */
+    inset: 0;                  /* top:0, right:0, bottom:0, left:0 all at once */
+    background: rgba(0,0,0,0.6);
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* When overlay is active (JS adds .active class) it becomes visible */
+  .popup-overlay.active {
+    display: flex;
+  }
+
+  /* The actual popup box */
+  .popup-box {
+    background: white;
+    border-radius: 20px;
+    padding: 50px 40px;
+    max-width: 480px;
+    width: 90%;
+    text-align: center;
+    position: relative;
+    animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    /* cubic-bezier creates a "bouncy spring" animation feel */
+  }
+
+  /* Spring-bounce animation for popup appearing */
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  /* Close (×) button on popup */
+  .popup-close {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    color: var(--soft);
+  }
+
+  .popup-emoji { font-size: 48px; margin-bottom: 16px; }
+
+  .popup-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    margin-bottom: 10px;
+  }
+
+  .popup-text {
+    color: var(--soft);
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 24px;
+  }
+
+  /* Coupon code box inside the popup */
+  .popup-code {
+    background: var(--gold-light);
+    border: 1.5px dashed var(--gold); /* Dashed border = "coupon" look */
+    border-radius: 10px;
+    padding: 14px 24px;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 4px;
+    margin-bottom: 24px;
+  }
+
+  /* ===== SCROLL ANIMATION CLASSES ===== */
+  /* Elements start invisible and slightly below their position */
+  .fade-in {
+    opacity: 0;               /* invisible */
+    transform: translateY(30px); /* shifted 30px down */
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  /* When JS adds .visible class, element fades in and moves to normal position */
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0); /* Back to original position */
+  }
+
+  /* ===== RESPONSIVE DESIGN (Mobile) =====
+     @media → applies rules ONLY when screen width is 768px or less (phones/tablets) */
+  @media (max-width: 768px) {
+    nav { padding: 14px 20px; }
+    .nav-links { gap: 20px; }
+    .nav-links a { font-size: 12px; letter-spacing: 0.5px; }
+    section { padding: 70px 20px; }
+    #features { padding: 40px 20px; }
+    .features-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .contact-grid { grid-template-columns: 1fr; gap: 50px; }
+    .hero-stats { gap: 30px; }
+  }
+
+  </style>
+  <!-- End of <style> block -->
+
+</head>
+<!-- End of <head> -->
+
+<body>
+<!-- <body> — Everything the user sees lives inside here. -->
+
+  <!-- =============================================
+       NAVIGATION BAR
+       A <nav> element holds the site navigation.
+       "sticky" positioning keeps it visible as user scrolls.
+       ============================================= -->
+  <nav>
+    <div class="logo">GlowLux<span>.</span></div>
+    <!-- Logo: brand name with a gold dot. The <span> is just for coloring that dot. -->
+
+    <ul class="nav-links">
+      <!-- <ul> = unordered list. Each <li> = one list item. -->
+      <!-- href="#home" means "scroll to the element with id='home'" -->
+      <li><a href="#home">Home</a></li>
+      <li><a href="#products">Products</a></li>
+      <li><a href="#deals">Deals</a></li>
+      <li><a href="#reviews">Reviews</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+
+  <!-- =============================================
+       HERO SECTION
+       id="home" lets the nav link anchor to this section.
+       This is the first big visual screen users see.
+       ============================================= -->
+  <section id="home">
+    <div class="hero-tag">✦ New Collection 2025</div>
+    <!-- Small pill-shaped tag above the headline -->
+
+    <h1 class="hero-title">
+      Reveal Your<br>
+      <em>Natural Glow</em>
+    </h1>
+    <!-- <h1> = most important heading on the page (only use one).
+         <br> = line break. <em> = italic emphasis. -->
+
+    <p class="hero-subtitle">
+      Luxury beauty products crafted from nature's finest ingredients.
+      Skin that tells your story — beautifully.
+    </p>
+
+    <div class="hero-buttons">
+      <!-- Two CTA buttons: one filled, one outline -->
+      <a href="#products" class="btn-primary">Shop Now</a>
+      <a href="#contact" class="btn-outline">Contact Us</a>
+    </div>
+
+    <!-- Stats row: social proof numbers -->
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-number">50K+</div>
+        <div class="stat-label">Happy Customers</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">200+</div>
+        <div class="stat-label">Products</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">100%</div>
+        <div class="stat-label">Natural</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">4.9★</div>
+        <div class="stat-label">Average Rating</div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- =============================================
+       FEATURES STRIP
+       Dark background strip with 4 selling points.
+       ============================================= -->
+  <div id="features">
+    <div class="features-grid fade-in">
+      <!-- fade-in class → starts invisible, animates in when scrolled into view -->
+
+      <div class="feature-item">
+        <div class="feature-icon">🌿</div>
+        <div>
+          <div class="feature-title">100% Natural</div>
+          <div class="feature-desc">No harmful chemicals</div>
+        </div>
+      </div>
+
+      <div class="feature-item">
+        <div class="feature-icon">🚚</div>
+        <div>
+          <div class="feature-title">Free Delivery</div>
+          <div class="feature-desc">On orders over $50</div>
+        </div>
+      </div>
+
+      <div class="feature-item">
+        <div class="feature-icon">♻️</div>
+        <div>
+          <div class="feature-title">Eco Packaging</div>
+          <div class="feature-desc">Sustainably sourced</div>
+        </div>
+      </div>
+
+      <div class="feature-item">
+        <div class="feature-icon">💎</div>
+        <div>
+          <div class="feature-title">Luxury Quality</div>
+          <div class="feature-desc">Dermatologist tested</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- =============================================
+       PRODUCTS SECTION
+       6 product cards displayed in a responsive grid.
+       ============================================= -->
+  <section id="products">
+    <div class="section-header fade-in">
+      <div class="section-tag">✦ Our Collection</div>
+      <h2 class="section-title">Bestselling Products</h2>
+      <p class="section-desc">
+        Handpicked formulas that deliver visible results.
+        Each product is dermatologist-tested and cruelty-free.
+      </p>
+    </div>
+
+    <div class="products-grid">
+      <!-- PRODUCT CARD 1 -->
+      <!-- onclick="openDeal(...)" calls the JavaScript function when card is clicked -->
+      <div class="product-card fade-in" onclick="openDeal('Rose Glow Serum', '$24', 'GLOW20')">
+        <div class="card-image">
+          <span class="card-badge">BESTSELLER</span>
+          <button class="card-wishlist">🤍</button>
+          <!-- Image sourced from Unsplash (free-to-use photography) -->
+          <img src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=600&q=80"
+               alt="Rose Glow Serum"
+               loading="lazy">
+          <!-- loading="lazy" = browser only loads image when it scrolls into view → faster page load -->
+        </div>
+        <div class="card-body">
+          <div class="card-category">Skincare</div>
+          <div class="card-name">Rose Glow Serum</div>
+          <div class="card-stars">★★★★★ <span>(284 reviews)</span></div>
+          <div class="card-price">
+            <span class="price-new">$24.99</span>
+            <span class="price-old">$34.99</span>
+          </div>
+          <button class="card-btn">Add to Cart</button>
+        </div>
+      </div>
+
+      <!-- PRODUCT CARD 2 -->
+      <div class="product-card fade-in" onclick="openDeal('Velvet Lip Gloss', '$18', 'LIP15')">
+        <div class="card-image">
+          <span class="card-badge">NEW</span>
+          <button class="card-wishlist">🤍</button>
+          <img src="https://images.unsplash.com/photo-1586495777744-4e6232bf2177?w=600&q=80"
+               alt="Velvet Lip Gloss"
+               loading="lazy">
+        </div>
+        <div class="card-body">
+          <div class="card-category">Lip Care</div>
+          <div class="card-name">Velvet Lip Gloss</div>
+          <div class="card-stars">★★★★★ <span>(190 reviews)</span></div>
+          <div class="card-price">
+            <span class="price-new">$18.99</span>
+            <span class="price-old">$26.99</span>
+          </div>
+          <button class="card-btn">Add to Cart</button>
+        </div>
+      </div>
+
+      <!-- PRODUCT CARD 3 -->
+      <div class="product-card fade-in" onclick="openDeal('Gold Eye Cream', '$45', 'EYE10')">
+        <div class="card-image">
+          <span class="card-badge">SALE 30%</span>
+          <button class="card-wishlist">🤍</button>
+          <img src="https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=600&q=80"
+               alt="Gold Eye Cream"
+               loading="lazy">
+        </div>
+        <div class="card-body">
+          <div class="card-category">Eye Care</div>
+          <div class="card-name">Gold Eye Cream</div>
+          <div class="card-stars">★★★★★ <span>(312 reviews)</span></div>
+          <div class="card-price">
+            <span class="price-new">$45.99</span>
+            <span class="price-old">$65.99</span>
+          </div>
+          <button class="card-btn">Add to Cart</button>
+        </div>
+      </div>
+
+      <!-- PRODUCT CARD 4 -->
+      <div class="product-card fade-in" onclick="openDeal('Silk Body Lotion', '$32', 'BODY25')">
+        <div class="card-image">
+          <button class="card-wishlist">🤍</button>
+          <img src="https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=600&q=80"
+               alt="Silk Body Lotion"
+               loading="lazy">
+        </div>
+        <div class="card-body">
+          <div class="card-category">Body Care</div>
+          <div class="card-name">Silk Body Lotion</div>
+          <div class="card-stars">★★★★☆ <span>(145 reviews)</span></div>
+          <div class="card-price">
+            <span class="price-new">$32.99</span>
+            <span class="price-old">$44.99</span>
+          </div>
+          <button class="card-btn">Add to Cart</button>
+        </div>
+      </div>
+
+      <!-- PRODUCT CARD 5 -->
+      <div class="product-card fade-in" onclick="openDeal('Hyaluronic Mist', '$29', 'MIST20')">
+        <div class="card-image">
+          <span class="card-badge">HOT</span>
+          <button class="card-wishlist">🤍</button>
+          <img src="https://images.unsplash.com/photo-1576426863848-c21f53c60b19?w=600&q=80"
+               alt="Hyaluronic Face Mist"
+               loading="lazy">
+        </div>
+        <div class="card-body">
+          <div class="card-category">Hydration</div>
+          <div class="card-name">Hyaluronic Face Mist</div>
+          <div class="card-stars">★★★★★ <span>(238 reviews)</span></div>
+          <div class="card-price">
+            <span class="price-new">$29.99</span>
+            <span class="price-old">$39.99</span>
+          </div>
+          <button class="card-btn">Add to Cart</button>
+        </div>
+      </div>
+
+      <!-- PRODUCT CARD 6 -->
+      <div class="product-card fade-in" onclick="openDeal('Charcoal Face Mask', '$22', 'MASK15')">
+        <div class="card-image">
+          <span class="card-badge">POPULAR</span>
+          <button class="card-wishlist">🤍</button>
+          <img src="https://images.unsplash.com/photo-1556228720-195a672e8a03?w=600&q=80"
+               alt="Charcoal Face Mask"
+               loading="lazy">
+        </div>
+        <div class="card-body">
+          <div class="card-category">Face Mask</div>
+          <div class="card-name">Charcoal Face Mask</div>
+          <div class="card-stars">★★★★☆ <span>(176 reviews)</span></div>
+          <div class="card-price">
+            <span class="price-new">$22.99</span>
+            <span class="price-old">$31.99</span>
+          </div>
+          <button class="card-btn">Add to Cart</button>
+        </div>
+      </div>
+
+    </div>
+    <!-- End of products-grid -->
+  </section>
+
+
+  <!-- =============================================
+       DEALS / FLASH SALE SECTION
+       Countdown timer with JavaScript.
+       ============================================= -->
+  <section id="deals">
+    <div class="section-header fade-in" style="max-width:600px; margin: 0 auto 40px;">
+      <div class="section-tag" style="color:var(--gold);">✦ Limited Time</div>
+      <h2 class="section-title" style="color:white;">Flash Sale Ends In</h2>
+      <p class="section-desc" style="color:rgba(255,255,255,0.6);">
+        Don't miss these exclusive deals — use your coupon at checkout.
+      </p>
+    </div>
+
+    <!-- Countdown timer boxes — numbers are updated live by JavaScript -->
+    <div class="deals-countdown">
+      <div class="countdown-box">
+        <span class="countdown-num" id="hours">08</span>
+        <span class="countdown-label">Hours</span>
+      </div>
+      <div class="countdown-box">
+        <span class="countdown-num" id="minutes">34</span>
+        <span class="countdown-label">Minutes</span>
+      </div>
+      <div class="countdown-box">
+        <span class="countdown-num" id="seconds">00</span>
+        <span class="countdown-label">Seconds</span>
+      </div>
+    </div>
+
+    <!-- CTA button that opens the popup with a general coupon -->
+    <button class="btn-primary" onclick="openDeal('Flash Sale Bundle', '$20 off', 'FLASH20')"
+            style="margin-top:16px;">
+      Claim Your Deal
+    </button>
+  </section>
+
+
+  <!-- =============================================
+       TESTIMONIALS SECTION
+       Horizontally scrollable review cards.
+       ============================================= -->
+  <section id="reviews">
+    <div class="section-header fade-in">
+      <div class="section-tag">✦ What Customers Say</div>
+      <h2 class="section-title">Real Results, Real Reviews</h2>
+    </div>
+
+    <div class="testimonials-row">
+      <!-- Review cards — each has stars, review text, and reviewer info -->
+
+      <div class="review-card fade-in">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"The Rose Glow Serum has completely transformed my skin in just 3 weeks. My friends keep asking what I'm using!"</p>
+        <div class="reviewer">
+          <!-- Unsplash portrait photos for reviewer avatars -->
+          <img class="reviewer-avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&q=80" alt="Sarah M.">
+          <div>
+            <div class="reviewer-name">Sarah M.</div>
+            <div class="reviewer-location">New York, USA</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card fade-in">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"The Velvet Lip Gloss lasts all day and the color is stunning. Already ordered three more shades for my collection."</p>
+        <div class="reviewer">
+          <img class="reviewer-avatar" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=80&q=80" alt="Ayesha K.">
+          <div>
+            <div class="reviewer-name">Ayesha K.</div>
+            <div class="reviewer-location">London, UK</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card fade-in">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"I was skeptical about the Gold Eye Cream, but the puffiness under my eyes has reduced noticeably. Worth every penny!"</p>
+        <div class="reviewer">
+          <img class="reviewer-avatar" src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=80&q=80" alt="Priya S.">
+          <div>
+            <div class="reviewer-name">Priya S.</div>
+            <div class="reviewer-location">Dubai, UAE</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card fade-in">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"The Face Mist is my holy grail product. I carry it everywhere. My skin never felt so hydrated through a long day."</p>
+        <div class="reviewer">
+          <img class="reviewer-avatar" src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=80&q=80" alt="Maria L.">
+          <div>
+            <div class="reviewer-name">Maria L.</div>
+            <div class="reviewer-location">Karachi, PK</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- =============================================
+       CONTACT SECTION
+       Two-column layout: info + form.
+       ============================================= -->
+  <section id="contact">
+    <div class="section-header fade-in">
+      <div class="section-tag">✦ Get In Touch</div>
+      <h2 class="section-title">We'd Love to Hear From You</h2>
+      <p class="section-desc">Have questions? Our beauty experts are ready to help.</p>
+    </div>
+
+    <div class="contact-grid fade-in">
+
+      <!-- Left: Contact details -->
+      <div class="contact-info">
+        <h3>Talk to Us</h3>
+        <p>Whether you have questions about ingredients, orders, or skincare routines — we're here for you every step of the way.</p>
+
+        <div class="contact-detail">
+          <div class="contact-icon">📍</div>
+          <div class="contact-detail-text">
+            <strong>Visit Us</strong>
+            <span>25 Beauty Lane, Karachi, Pakistan</span>
+          </div>
+        </div>
+
+        <div class="contact-detail">
+          <div class="contact-icon">📞</div>
+          <div class="contact-detail-text">
+            <strong>Call Us</strong>
+            <span>+92 300 123 4567</span>
+          </div>
+        </div>
+
+        <div class="contact-detail">
+          <div class="contact-icon">✉️</div>
+          <div class="contact-detail-text">
+            <strong>Email Us</strong>
+            <span>hello@glowlux.com</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Contact form (no <form> tag needed; JS handles submission) -->
+      <div class="contact-form">
+        <input type="text"   placeholder="Your Name" />
+        <input type="email"  placeholder="Email Address" />
+        <input type="text"   placeholder="Subject" />
+        <textarea placeholder="Your message..."></textarea>
+        <!-- onclick triggers JS to show a success message -->
+        <button class="btn-primary" onclick="submitForm()">Send Message</button>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- =============================================
+       FOOTER
+       Simple bottom strip with brand name + copyright.
+       ============================================= -->
+  <footer>
+    <div class="footer-logo">GlowLux.</div>
+    <p>© 2025 GlowLux Beauty. All rights reserved. | Made with 💛</p>
+  </footer>
+
+
+  <!-- =============================================
+       DEAL POPUP MODAL
+       Hidden by default. Shown by JavaScript when
+       a product card or deal button is clicked.
+       ============================================= -->
+  <div class="popup-overlay" id="popupOverlay">
+    <!-- Clicking the dark overlay also closes the popup -->
+    <div class="popup-box" onclick="event.stopPropagation()">
+      <!-- stopPropagation → prevents click from "bubbling up" to the overlay (which would close it) -->
+
+      <button class="popup-close" onclick="closePopup()">✕</button>
+
+      <div class="popup-emoji">🎁</div>
+
+      <h3 class="popup-title" id="popupTitle">Special Deal!</h3>
+      <p class="popup-text" id="popupText">Use code below for exclusive savings on your order.</p>
+      <div class="popup-code" id="popupCode">GLOW20</div>
+
+      <button class="btn-primary" onclick="closePopup()" style="width:100%;">
+        Shop Now & Save!
+      </button>
+    </div>
+  </div>
+
+
+  <!-- =============================================
+       JAVASCRIPT
+       Handles all interactive behavior:
+       1. Countdown timer
+       2. Scroll animations
+       3. Popup open/close
+       4. Form submission
+       <script> runs after the page loads (placed at bottom)
+       ============================================= -->
+  <script>
+
+    // ---- 1. COUNTDOWN TIMER ----
+    // Sets an end time 8 hours from when the page loads.
+    // setInterval runs the function every 1000ms (1 second).
+
+    const endTime = new Date().getTime() + (8 * 60 * 60 * 1000);
+    // Date().getTime() = current time in milliseconds
+    // We add 8 hours worth of milliseconds: 8 * 60mins * 60secs * 1000ms
+
+    function updateCountdown() {
+      const now  = new Date().getTime();         // Current time right now
+      const diff = endTime - now;                // How many ms remain?
+
+      if (diff <= 0) {
+        // If time has run out, show zeros
+        document.getElementById('hours').textContent   = '00';
+        document.getElementById('minutes').textContent = '00';
+        document.getElementById('seconds').textContent = '00';
+        return;
+      }
+
+      // Convert ms to hours, minutes, seconds
+      const h = Math.floor(diff / (1000 * 60 * 60));
+      const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+      // padStart(2, '0') adds a leading zero if number is single-digit (e.g. "7" → "07")
+      document.getElementById('hours').textContent   = String(h).padStart(2, '0');
+      document.getElementById('minutes').textContent = String(m).padStart(2, '0');
+      document.getElementById('seconds').textContent = String(s).padStart(2, '0');
+    }
+
+    updateCountdown();                      // Run once immediately on load
+    setInterval(updateCountdown, 1000);     // Then repeat every second
+
+
+    // ---- 2. SCROLL ANIMATION ----
+    // IntersectionObserver watches elements and fires when they enter the viewport.
+    // When a .fade-in element is 15% visible on screen, we add .visible to animate it.
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          // Once visible, we stop watching this element (no need to animate again)
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    // threshold: 0.15 → triggers when 15% of the element is in view
+
+    // Apply the observer to all elements with class "fade-in"
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+
+    // ---- 3. POPUP OPEN / CLOSE ----
+    // openDeal is called when a product card or deal button is clicked.
+    // It updates the popup content and makes it visible.
+
+    function openDeal(productName, price, coupon) {
+      document.getElementById('popupTitle').textContent =
+        '🎉 Deal on ' + productName + '!';
+      document.getElementById('popupText').textContent =
+        'Get ' + price + ' off today only! Use the exclusive coupon code at checkout:';
+      document.getElementById('popupCode').textContent = coupon;
+
+      // Add 'active' class → CSS changes display from 'none' to 'flex'
+      document.getElementById('popupOverlay').classList.add('active');
+    }
+
+    function closePopup() {
+      document.getElementById('popupOverlay').classList.remove('active');
+    }
+
+    // Clicking OUTSIDE the popup box (on the dark overlay) closes it
+    document.getElementById('popupOverlay').addEventListener('click', closePopup);
+
+
+    // ---- 4. FORM SUBMISSION ----
+    // No real backend here — just shows an alert confirming the message.
+    // In a real website, you'd replace this with a fetch() API call.
+
+    function submitForm() {
+      alert('✅ Thank you! Your message has been sent. We\'ll reply within 24 hours.');
+    }
+
+    // ---- 5. WISHLIST HEART TOGGLE ----
+    // When clicking the heart button on any product card,
+    // toggle between 🤍 (not saved) and ❤️ (saved).
+    // querySelectorAll gets all elements matching the selector.
+
+    document.querySelectorAll('.card-wishlist').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation(); // Prevents the product card click (popup) from also firing
+        this.textContent = this.textContent === '🤍' ? '❤️' : '🤍';
+        // Ternary operator: condition ? value_if_true : value_if_false
+      });
+    });
+
+  </script>
+  <!-- End of <script> block -->
+
+</body>
+<!-- End of <body> -->
+
+</html>
+<!-- End of HTML document -->
